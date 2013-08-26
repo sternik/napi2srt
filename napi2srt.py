@@ -278,11 +278,12 @@ def mpl2(mpl2file, fps):
     reader, writer = open(mpl2file), open('/tmp/t', 'w')
 
     for line in reader:
-        group = MPL2LINE.match(line).groupdict()
-        start = int(float(group["start"])*0.1*FRAMERATE) or 1
-        stop = int(float(group["stop"])*0.1*FRAMERATE)
-        rest = group["line"]
-        writer.write("{%d}{%d}%s" % (start, stop, rest))
+        if line.strip():
+            group = MPL2LINE.match(line).groupdict()
+            start = int(float(group["start"])*0.1*FRAMERATE) or 1
+            stop = int(float(group["stop"])*0.1*FRAMERATE)
+            rest = group["line"]
+            writer.write("{%d}{%d}%s" % (start, stop, rest))
 
     [fileobj.close() for fileobj in (reader, writer)]
 
